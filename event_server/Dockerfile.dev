@@ -1,0 +1,16 @@
+# service1/Dockerfile.dev
+
+FROM node:20-alpine
+
+# 작업 디렉토리 생성
+WORKDIR /app
+
+# 의존성만 먼저 복사하고 설치
+COPY package*.json ./
+RUN npm install
+
+# 코드 복사는 생략 → 로컬에서 volume 마운트
+# COPY . . ← 필요 없음
+
+# 개발용 명령어 실행 (start:dev = nodemon or nest --watch)
+CMD ["npm", "run", "start:dev"]
