@@ -21,7 +21,7 @@ async function bootstrap() {
   app.use(
     '/event',
     createProxyMiddleware({
-      target: 'http://evnet_server:3000',
+      target: 'http://event_server:3000',
       changeOrigin: true,
       pathRewrite: { '^/event': '' },
     }),
