@@ -1,10 +1,10 @@
 services:
-  api-gateway:
+  api_gateway:
     build:
-      context: ./api-gateway
+      context: ./api_gateway
       dockerfile: Dockerfile.dev
     volumes:
-      - ./api-gateway:/app
+      - ./api_gateway:/app
       - /app/node_modules
     ports:
       - "3000:3000"
