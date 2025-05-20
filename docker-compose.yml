@@ -1,25 +1,61 @@
 services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./api-gateway:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - auth_server
+      - event_server
+
   auth_server:
     build:
       context: ./auth_server
       dockerfile: Dockerfile.dev
     volumes:
-      - ./auth_server:/app              # 코드 핫 리로드
-      - /app/node_modules            # node_modules 보호
+      - ./auth_server:/app
+      - /app/node_modules
     ports:
       - "3001:3000"
     environment:
-      - NODE_ENV=development
+      - MONGO_URL=mongodb://mongo-auth:27017/auth-db
     depends_on:
-      - mongo
+      - mongo-auth
 
-  mongo:
-    image: mongo:6
-    container_name: mongo
-    ports:
-      - "27017:27017"
+  event_server:
+    build:
+      context: ./event_server
+      dockerfile: Dockerfile.dev
     volumes:
-      - mongodb-data:/data/db
+      - ./event_server:/app
+      - /app/node_modules
+    ports:
+      - "3002:3000"
+    environment:
+      - MONGO_URL=mongodb://mongo-event:27017/event-db
+    depends_on:
+      - mongo-event
+
+  mongo-auth:
+    image: mongo:6
+    container_name: mongo-auth
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-data-auth:/data/db
+
+  mongo-event:
+    image: mongo:6
+    container_name: mongo-event
+    ports:
+      - "27019:27017"
+    volumes:
+      - mongo-data-event:/data/db
 
 volumes:
-  mongodb-data:
+  mongo-data-auth:
+  mongo-data-event:
