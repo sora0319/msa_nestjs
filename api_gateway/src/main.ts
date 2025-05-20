@@ -11,7 +11,7 @@ async function bootstrap() {
   app.use(
     '/auth',
     createProxyMiddleware({
-      target: 'http://auth-server:3000',
+      target: 'http://auth_server:3000',
       changeOrigin: true,
       pathRewrite: { '^/auth': '' },
     }),
@@ -21,7 +21,7 @@ async function bootstrap() {
   app.use(
     '/event',
     createProxyMiddleware({
-      target: 'http://evnet-server:3000',
+      target: 'http://evnet_server:3000',
       changeOrigin: true,
       pathRewrite: { '^/event': '' },
     }),
