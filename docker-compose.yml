@@ -1,0 +1,25 @@
+services:
+  auth_server:
+    build:
+      context: ./auth_server
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./auth_server:/app              # 코드 핫 리로드
+      - /app/node_modules            # node_modules 보호
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+
+volumes:
+  mongodb-data:
